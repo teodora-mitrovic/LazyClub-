@@ -1,0 +1,4 @@
+
+export const EVENTS_LOADING = 'EVENTS_LOADING';
+export const EVENTS_SUCCESS = 'EVENTS_SUCCESS';
+export const EVENTS_FAILURE = 'EVENTS_FAILURE';
