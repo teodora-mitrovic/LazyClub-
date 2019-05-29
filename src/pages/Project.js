@@ -28,7 +28,7 @@ class Project extends React.Component{
 
   componentDidMount() {
     const { navigation } = this.props;
-    const id = navigation.getParam('id', 'NO-ID');
+    var id = navigation.getParam('id', 'NO-ID');
     this.props.project(id, this.props.data_login.access_token);
   }
   

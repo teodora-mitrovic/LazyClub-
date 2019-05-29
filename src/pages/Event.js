@@ -30,7 +30,7 @@ class Event extends React.Component{
 
   componentDidMount() {
 
-    const id = this.props.navigation.getParam('id', 'NO-ID');      
+    var id = this.props.navigation.getParam('id', 'NO-ID');      
     this.props.event(id, this.props.data_login.access_token);
         
 

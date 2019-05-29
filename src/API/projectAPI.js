@@ -1,5 +1,6 @@
 import { PROJECT_SUCCESS, PROJECT_FAILURE, PROJECT_LOADING,
-         SAVE_PROJECT_SUCCESS, SAVE_PROJECT_FAILURE, SAVE_PROJECT_LOADING } from '../actions/projectActions.js';
+         SAVE_PROJECT_SUCCESS, SAVE_PROJECT_FAILURE, SAVE_PROJECT_LOADING,
+         DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAILURE, DELETE_PROJECT_LOADING  } from '../actions/projectActions.js';
 import axios from 'react-native-axios';
 
 export function project(id, token) {
@@ -51,7 +52,7 @@ function ProjectFailure(error) {
 }
 
 
-////
+//// post 
 
 
 export function saveProject(data, token) {
@@ -98,5 +99,57 @@ function SaveProjectFailure(error) {
    
     return {
         type: SAVE_PROJECT_FAILURE
+    }
+}
+
+
+///////////////delete project
+
+export function deleteProject(id, token) {
+
+    return (dispatch) => {
+        dispatch(DeleteProjectLoading(id));
+
+        axios({ url : 'http://192.168.0.15:8000/api/auth/projects',
+                method: 'delete',
+                data: {"id": id},
+                header: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "Authorization" : "Bearer "+token
+
+            }})
+        .then(response => {
+        dispatch(DeleteProjectSuccess(response.data))
+        })
+        .catch(error => {
+            dispatch(DeleteProjectFailure(error))
+        })
+
+
+
+    } //dispatch
+}
+
+function DeleteProjectLoading(id) {
+    
+    return {
+        type: DELETE_PROJECT_LOADING,
+        id: id
+    }
+}
+
+function DeleteProjectSuccess(data) {
+
+    return {
+        type: DELETE_PROJECT_SUCCESS,
+        data: data
+    }
+}
+
+function DeleteProjectFailure(error) {
+   
+    return {
+        type: DELETE_PROJECT_FAILURE
     }
 }

@@ -13,6 +13,10 @@ import ProjectsReducer from './ProjectsReducer';
 import SaveEventReducer from './SaveEventReducer';
 import SaveUserReducer from './SaveUserReducer';
 import SaveProjectReducer from './SaveProjectReducer';
+import DeleteUserReducer from './DeleteUserReducer';
+import DeleteProjectReducer from './DeleteProjectReducer';
+
+
 
 
 
@@ -32,7 +36,10 @@ const appReducer = combineReducers({
   HomeReducer,
   SaveEventReducer,
   SaveUserReducer,
-  SaveProjectReducer
+  SaveProjectReducer,
+  DeleteUserReducer,
+  DeleteProjectReducer
+
 });
 
 const rootReducer = (state, action) => {

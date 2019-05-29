@@ -1,12 +1,14 @@
 import React from 'react';
 import renderIf from '../functions/renderIf.js';
-import {View,  Modal, TouchableOpacity, ScrollView, StatusBar, Text, FlatList} from 'react-native';
+import {View,  Modal, TouchableOpacity, ScrollView, StatusBar, Text, FlatList, Alert} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import Swipeout from 'react-native-swipeout';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {projects} from '../API/projectsAPI.js';
+import {deleteProject} from '../API/projectAPI.js';
+
 
 import {baseStyle, colors, fonts} from '../style/base.js';
 import SectionTitle from '../components/SectionTitle.js';
@@ -30,12 +32,24 @@ class Projects extends React.Component{
   }
 
 
+  deleteProject(project) {
+    Alert.alert(
+      'Alert',
+      'Delete '+project.name+' project?',
+      [
+        
+        {text: 'OK', onPress: () =>  this.props.deleteProject(project.id, this.props.data_login.access_token)},
+      ],
+      {cancelable: false},
+    );
+  }
+
   renderProject(project) {
       var swipeoutBtns = [
           {
             text: 'Delete',
             backgroundColor: 'red',
-            onPress: ()=>{}
+            onPress: ()=>{this.deleteProject(project)}
           }
       ]
     return (
@@ -103,6 +117,7 @@ const mapStateToProps = (state) => {
       isLoading: state.ProjectsReducer.isLoading,
       error: state.ProjectsReducer.error,
       data: state.ProjectsReducer.data,
+      isDeleted: state.DeletedProjectReducer,
       data_login: state.LoginReducer.data
   }
 };
@@ -110,7 +125,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        ...bindActionCreators({ projects }, dispatch)
+        ...bindActionCreators({ projects }, dispatch),
+        ...bindActionCreators({ deleteProject }, dispatch)
+
     }
 }
 

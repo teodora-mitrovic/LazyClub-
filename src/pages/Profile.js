@@ -33,7 +33,7 @@ class Profile extends React.Component{
 
   componentDidMount(){
     const { navigation } = this.props;
-    const id = navigation.getParam('id', 'NO-ID');
+    var id = navigation.getParam('id', 'NO-ID');
     this.props.user(id, this.props.data_login.access_token);
   }
 
