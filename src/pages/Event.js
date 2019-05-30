@@ -40,8 +40,20 @@ class Event extends React.Component{
   
   render(){
 
+     if(this.props.data.event==undefined) {
+       return(
+        <Loader/>
+        )
+    }
 
-    if(this.props.data.event!=undefined){
+   
+    if(this.props.isLoading) {
+      return (
+        <Loader/>
+        )
+    }
+
+
       return(
   
     <View style={baseStyle.container}>
@@ -73,15 +85,20 @@ class Event extends React.Component{
     
       )
      
-    }
-
-
-   return (
-        <Loader/>
-    )
+    
 
      
   }
+
+  componentDidUpdate(prevProps , prevState) {
+    const { navigation } = this.props;
+    var id = navigation.getParam('id', 'NO-ID');
+    
+    if(prevProps.navigation.getParam('id')!== id) {
+       
+        this.props.event(id, this.props.data_login.access_token);
+    }
+}
 
 
   

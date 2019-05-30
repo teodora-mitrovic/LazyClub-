@@ -17,11 +17,11 @@ import Event from '../pages/Event'
 import AddEvent from '../pages/AddEvent'
 import AddProject from '../pages/AddProject'
 import AddUser from '../pages/AddUser'
-
+import Logout from '../pages/Logout'
 
 import Hidden from './Hidden.js'
 
-import { Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements'
 
 
 
@@ -59,6 +59,12 @@ const DrawerStack = createDrawerNavigator({
       navigationOptions: {
         drawerLabel: <Hidden />
     }},
+  Logout : {
+    screen: Logout,
+      navigationOptions: {
+        drawerLabel: <Hidden />
+    }
+  }
 
 })
 
@@ -84,7 +90,8 @@ const DrawerNavigation = createStackNavigator({
                   />
                 </TouchableOpacity>),
     headerRight: (<TouchableOpacity 
-                  style={{marginRight: 20}}>
+                  style={{marginRight: 20}}
+                   onPress={() => navigation.navigate('Logout')}>
                     <Icon
                       name='sign-out'
                       type='font-awesome'

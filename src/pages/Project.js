@@ -38,8 +38,21 @@ class Project extends React.Component{
 
   
 
-    if(this.props.data.project!=undefined) {
+    if(this.props.data.project==undefined) {
        return(
+        <Loader/>
+        )
+    }
+
+   
+    if(this.props.isLoading) {
+      return (
+        <Loader/>
+        )
+    }
+
+   
+    return(
       
       <View style={baseStyle.container}>
         <ScrollView >
@@ -64,13 +77,18 @@ class Project extends React.Component{
       </View>
     
       )
+    
+
+}
+
+componentDidUpdate(prevProps , prevState) {
+    const { navigation } = this.props;
+    var id = navigation.getParam('id', 'NO-ID');
+    
+    if(prevProps.navigation.getParam('id')!== id) {
+       
+        this.props.project(id, this.props.data_login.access_token);
     }
-
-     return (
-        <Loader/>
-        )
-
-
 }
 
    

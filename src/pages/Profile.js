@@ -99,6 +99,16 @@ class Profile extends React.Component{
       )
   }
 
+  componentDidUpdate(prevProps , prevState) {
+    const { navigation } = this.props;
+    var id = navigation.getParam('id', 'NO-ID');
+    
+    if(prevProps.navigation.getParam('id')!== id) {
+       
+        this.props.user(id, this.props.data_login.access_token);
+    }
+  }
+
 }
 
 

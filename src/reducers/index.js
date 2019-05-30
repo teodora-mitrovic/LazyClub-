@@ -15,12 +15,9 @@ import SaveUserReducer from './SaveUserReducer';
 import SaveProjectReducer from './SaveProjectReducer';
 import DeleteUserReducer from './DeleteUserReducer';
 import DeleteProjectReducer from './DeleteProjectReducer';
-
-
-
-
-
+import DeleteEventReducer from './DeleteEventReducer';
 import HomeReducer from './HomeReducer';
+import LogoutReducer from './LogoutReducer';
 
 
 
@@ -38,7 +35,9 @@ const appReducer = combineReducers({
   SaveUserReducer,
   SaveProjectReducer,
   DeleteUserReducer,
-  DeleteProjectReducer
+  DeleteProjectReducer,
+  DeleteEventReducer,
+  LogoutReducer
 
 });
 

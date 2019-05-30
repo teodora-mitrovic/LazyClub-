@@ -1,7 +1,7 @@
 import React from 'react';
 import renderIf from '../functions/renderIf.js';
 import {View, Dimensions, ScrollView, StyleSheet, StatusBar, Text,
-        TouchableHighlight, FlatList, ActivityIndicato} from 'react-native';
+        TouchableHighlight, FlatList, ActivityIndicator, RefreshControl} from 'react-native';
 import {baseStyle} from '../style/base.js';
 import {withNavigation} from 'react-navigation';
 import { connect } from 'react-redux';
@@ -21,13 +21,11 @@ import Carousel from 'react-native-snap-carousel';
 class Home extends React.Component{
   
 
-   static navigationOptions = ({navigation}) => ({
-    title: 'LazyClub'
-  })
-
-
   constructor(props){
     super(props);
+    this.state={
+      refreshing:false
+    }
     
   }
 
@@ -60,11 +58,25 @@ class Home extends React.Component{
       )
   }
 
+  _onRefresh = ()=> {
+    this.setState({refreshing: true});
+    this.props.home(this.props.data_login.access_token);
+    this.setState({refreshing:false})
+
+  }
+
 
   get returnView() {
     return (
       <View style={baseStyle.container}>
-        <ScrollView >
+        <ScrollView 
+          refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+        >
 
           <StatusBar hidden={false} barStyle="dark-content"/>
             
@@ -155,6 +167,12 @@ class Home extends React.Component{
       return (
         <ActivityIndicator size="small" color="#00ff00" />
         )
+    }
+
+    if(this.props.isLoading) {
+      return (
+        <Loader/>
+      )
     }
     
     return (!this.props.data.events && !this.props.data.projects && !this.props.data.users) ? this.loader : this.returnView;

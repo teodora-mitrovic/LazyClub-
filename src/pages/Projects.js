@@ -1,6 +1,6 @@
 import React from 'react';
 import renderIf from '../functions/renderIf.js';
-import {View,  Modal, TouchableOpacity, ScrollView, StatusBar, Text, FlatList, Alert} from 'react-native';
+import {View,  Modal, TouchableOpacity, ScrollView, StatusBar, Text, FlatList, Alert, RefreshControl} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import Swipeout from 'react-native-swipeout';
 
@@ -22,6 +22,9 @@ class Projects extends React.Component{
    
   constructor(props){
     super(props);
+    this.state = {
+      refreshing: false
+    }
 
     
   }
@@ -43,6 +46,7 @@ class Projects extends React.Component{
       {cancelable: false},
     );
   }
+  
 
   renderProject(project) {
       var swipeoutBtns = [
@@ -61,6 +65,13 @@ class Projects extends React.Component{
 
   }
 
+  _onRefresh = () =>  {
+    this.setState({refreshing: true});
+    this.props.projects(this.props.data_login.access_token);
+    this.setState({refreshing:false})
+
+  }
+
   render(){
 
     if(this.props.isLoading) {
@@ -72,7 +83,13 @@ class Projects extends React.Component{
     return(
 		
 		<View style={baseStyle.container}>
-		<ScrollView >
+		<ScrollView 
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        } >
 			<StatusBar hidden={false} barStyle="dark-content"/>
 		
 	     <View style={baseStyle.contentContainer}>
@@ -106,6 +123,9 @@ class Projects extends React.Component{
       )
   }
 
+
+  
+
 }
 
 
@@ -117,6 +137,7 @@ const mapStateToProps = (state) => {
       isLoading: state.ProjectsReducer.isLoading,
       error: state.ProjectsReducer.error,
       data: state.ProjectsReducer.data,
+      isRetreived: state.ProjectsReducer.isRetreived,
       isDeleted: state.DeletedProjectReducer,
       data_login: state.LoginReducer.data
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import renderIf from '../functions/renderIf.js';
-import {View,  Modal, TouchableOpacity, ScrollView, StatusBar, Text, FlatList, Alert} from 'react-native';
+import {View,  Modal, TouchableOpacity, ScrollView, StatusBar, Text, FlatList, Alert, RefreshControl} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -24,7 +24,9 @@ class People extends React.Component{
    
   constructor(props){
     super(props);
-
+    this.state = {
+      refreshing: false
+    }
     
   }
 
@@ -66,6 +68,13 @@ class People extends React.Component{
       </Swipeout>
       )
   }
+
+   _onRefresh = () =>  {
+    this.setState({refreshing: true});
+    this.props.users(this.props.data_login.access_token);
+    this.setState({refreshing:false})
+
+  }
  
 
   render(){
@@ -78,7 +87,13 @@ class People extends React.Component{
     return(
 		
 		<View style={[baseStyle.container] }>
-		<ScrollView >
+		<ScrollView 
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        } >
 			<StatusBar hidden={false} barStyle="dark-content"/>
 		
 	    <View style={baseStyle.contentContainer}>

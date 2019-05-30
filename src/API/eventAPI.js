@@ -1,5 +1,6 @@
 import { EVENT_SUCCESS, EVENT_FAILURE, EVENT_LOADING, 
-          SAVE_EVENT_SUCCESS, SAVE_EVENT_FAILURE, SAVE_EVENT_LOADING } from '../actions/eventActions.js';
+          SAVE_EVENT_SUCCESS, SAVE_EVENT_FAILURE, SAVE_EVENT_LOADING,
+          DELETE_EVENT_SUCCESS, DELETE_EVENT_FAILURE, DELETE_EVENT_LOADING } from '../actions/eventActions.js';
 import axios from 'react-native-axios';
 
 
@@ -112,4 +113,64 @@ function SaveEventFailure(error) {
     }
 }
 
+////////// delete event
 
+export function deleteEvent(id, token) {
+
+    
+    return (dispatch) => {
+        dispatch(DeleteEventLoading(id));
+
+            
+        axios({
+            url: 'http://192.168.0.15:8000/api/auth/events', 
+            method: 'delete',
+            data: {"id":id},
+            headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "Authorization" : "Bearer "+token
+
+            }})
+        .then(response => {
+            dispatch(DeleteEventSuccess(response.data))
+        })
+        .catch(error => {
+            dispatch(DeleteEventFailure(error))
+        })
+    }
+}
+
+
+
+
+function DeleteEventLoading(id) {
+    console.log('loading');
+
+    return {
+        type: DELETE_EVENT_LOADING,
+        id: id
+       
+    }
+}
+
+
+
+function DeleteEventSuccess(data, id) {
+    console.log('event found');
+    console.log(data);
+
+    return {
+        type: DELETE_EVENT_SUCCESS,
+        data: data,
+    }
+}
+
+function DeleteEventFailure(error) {
+    console.log(error);
+
+    return {
+        type: DELETE_EVENT_FAILURE,
+        error: error
+    }
+}
